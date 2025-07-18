@@ -1,0 +1,48 @@
+services:
+  backend:
+    container_name: back-swapi
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - APP_PORT=5000
+      - APP_CLUSTER=false
+      - APP_IS_LOCAL_ENVIRONMENT=false
+      - APP_CORS_ALLOW_ORIGIN=*
+      - APP_GLOBAL_PREFIX=api/v1
+      - APP_METHOD=GET,POST,PUT,DELETE,PATCH
+      - APP_LOG_LEVEL=info
+      - APP_LOG_FILE=./logs
+      - STAR_WARS_API_PROTOCOL=https
+      - STAR_WARS_API_DOMAIN=swapi.dev
+      - STAR_WARS_API_PREFIX=api
+      - CACHE_TTL=3600000
+      - CACHE_MAX=100
+    networks:
+      - shared_network
+    restart: unless-stopped
+  
+  frontend:
+    container_name: front-swapi
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://backend:5000/api/v1
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://backend:5000/api/v1
+    depends_on:
+      - backend
+    networks:
+      - shared_network
+    restart: unless-stopped
+
+networks:
+  shared_network:
+    driver: bridge
