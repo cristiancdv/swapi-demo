@@ -12,6 +12,7 @@ import { AxiosModule } from "./infra/axios/axios.module";
 import { CacheModule } from "@nestjs/cache-manager";
 import { ConfigMap } from "./config/enviroments/types/enviroment";
 import { CacheConfigDto } from "./config/enviroments/dto/cache-config.dto";
+import { UtilsModule } from "./utils/utils.module";
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { CacheConfigDto } from "./config/enviroments/dto/cache-config.dto";
     PlanetsModule,
     MoviesModule,
     AxiosModule,
+    UtilsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

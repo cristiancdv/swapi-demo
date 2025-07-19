@@ -1,6 +1,3 @@
-import { CharacterData } from "../character-data/character-data";
-import { FilmsData } from "../films-data/films-data";
-
 export interface ShipData {
   count: number;
   name: string;
@@ -16,8 +13,8 @@ export interface ShipData {
   hyperdrive_rating: string;
   MGLT: string;
   starship_class: string;
-  pilots: CharacterData[];
-  films: FilmsData[];
+  pilots: string[];
+  films: string[];
   created: string;
   edited: string;
   url: string;

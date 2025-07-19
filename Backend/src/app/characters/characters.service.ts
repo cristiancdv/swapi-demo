@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { CharactersEntityDetails } from "@/domain/characters/characters.entity";
 import { CharacterEntityDetails } from "@/domain/characters/character.entity";
 import { GetAllCharactersUseCase, GetCharacterUseCase } from "./characters.use-cases";
 import { GetCharacterDto } from "./dto/get-character.dto";
@@ -11,7 +12,7 @@ export class CharactersService {
     private readonly getAllCharactersUseCase: GetAllCharactersUseCase,
   ) {}
 
-  async findAll(page: number): Promise<PaginatedResponse<CharacterEntityDetails>> {
+  async findAll(page: number): Promise<PaginatedResponse<CharactersEntityDetails>> {
     return await this.getAllCharactersUseCase.execute(page);
   }
 

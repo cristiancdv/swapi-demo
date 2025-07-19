@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CharactersService } from "../../../src/app/characters/characters.service";
 import { CharacterRepository } from "../../../src/domain/characters/character.repository";
-import { CharacterEntityDetails } from "../../../src/domain/characters/character.entity";
+import { CharacterEntityDetails } from "../../../src/domain/characters/characters.entity";
 import { CharacterData } from "../../../src/infra/axios/types/character-data/character-data";
 import { GetCharacterDto } from "../../../src/app/characters/dto/get-character.dto";
 
@@ -166,7 +166,7 @@ describe("CharactersService", () => {
         name: "Luke",
         // Missing other required fields
       } as CharacterData;
-      
+
       const query: GetCharacterDto = { id: "1" };
       characterRepository.getCharacter.mockResolvedValue(malformedData);
 

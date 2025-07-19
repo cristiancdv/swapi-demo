@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { GetPlanetDto } from "./dto/get-planet.dto";
+import { PlanetsEntityDetails } from "@/domain/planets/planets.entity";
 import { PlanetEntityDetails } from "@/domain/planets/planet.entity";
 import { GetAllPlanetsUseCase, GetPlanetUseCase } from "./planets.use-cases";
 import { PaginatedResponse } from "@/infra/axios/types/paginated.types";
@@ -11,7 +12,7 @@ export class PlanetsService {
     private readonly getAllPlanetsUseCase: GetAllPlanetsUseCase,
   ) {}
 
-  async findAll(page: number): Promise<PaginatedResponse<PlanetEntityDetails>> {
+  async findAll(page: number): Promise<PaginatedResponse<PlanetsEntityDetails>> {
     return await this.getAllPlanetsUseCase.execute(page);
   }
 

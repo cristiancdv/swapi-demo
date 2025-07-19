@@ -143,4 +143,4 @@ describe("CharacterRepository", () => {
       expect(result).toEqual(malformedData);
     });
   });
-}); 
+});

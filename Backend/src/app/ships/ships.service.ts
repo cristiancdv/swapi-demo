@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { GetShipDto } from "./dto/get-ship.dto";
+import { ShipsEntityDetails } from "@/domain/ships/ships.entity";
 import { ShipEntityDetails } from "@/domain/ships/ship.entity";
 import { GetAllShipsUseCase, GetShipUseCase } from "./ships.use-cases";
 import { PaginatedResponse } from "@/infra/axios/types/paginated.types";
@@ -11,7 +12,7 @@ export class ShipsService {
     private readonly getAllShipsUseCase: GetAllShipsUseCase,
   ) {}
 
-  findAll(page: number): Promise<PaginatedResponse<ShipEntityDetails>> {
+  findAll(page: number): Promise<PaginatedResponse<ShipsEntityDetails>> {
     return this.getAllShipsUseCase.execute(page);
   }
 

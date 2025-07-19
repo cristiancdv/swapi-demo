@@ -1,11 +1,15 @@
-import { ReplaceEndpointsService } from "@/utils/replace-endpoints/replace-endpoints.service";
 import { CharacterData } from "../../infra/axios/types/character-data/character-data";
+import { ReplaceEndpointsService } from "../../utils/replace-endpoints/replace-endpoints.service";
 
-export class CharacterEntityDetails {
+export class CharactersEntityDetails {
   constructor(
     private readonly character: CharacterData,
     private readonly replaceEndpointsService: ReplaceEndpointsService,
   ) {}
+
+  get count(): number {
+    return this.character.count;
+  }
 
   get id(): string {
     return this.character.url.split("/")[this.character.url.split("/").length - 2];
@@ -13,45 +17,41 @@ export class CharacterEntityDetails {
   get name(): string {
     return this.character.name;
   }
-  get height(): string {
-    return this.character.height;
+  get description(): string {
+    return `
+    - Altura: ${this.character.height} 
+    - Peso: ${this.character.mass} 
+    - Color de pelo: ${this.character.hair_color} 
+    - Color de piel: ${this.character.skin_color} 
+    - Color de ojos: ${this.character.eye_color} 
+    - Año de nacimiento: ${this.character.birth_year} 
+    - Género: ${this.character.gender}`;
   }
-  get mass(): string {
-    return this.character.mass;
-  }
-  get hair_color(): string {
-    return this.character.hair_color;
-  }
-  get skin_color(): string {
-    return this.character.skin_color;
-  }
-  get eye_color(): string {
-    return this.character.eye_color;
-  }
-  get birth_year(): string {
-    return this.character.birth_year;
-  }
-  get gender(): string {
-    return this.character.gender;
-  }
+
   get homeworld(): string {
     return this.replaceEndpointsService.replaceEndpoints(this.character.homeworld);
   }
+
   get films(): string[] {
     return this.character.films.map(film => this.replaceEndpointsService.replaceEndpoints(film));
   }
+
   get species(): string[] {
-    return this.character.species.map(species => this.replaceEndpointsService.replaceEndpoints(species));
+    return this.character.species;
   }
+
   get starships(): string[] {
     return this.character.starships.map(starship => this.replaceEndpointsService.replaceEndpoints(starship));
   }
+
   get created(): string {
     return this.character.created;
   }
+
   get edited(): string {
     return this.character.edited;
   }
+
   get url(): string {
     return this.replaceEndpointsService.replaceEndpoints(this.character.url);
   }
