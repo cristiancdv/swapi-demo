@@ -47,3 +47,4 @@ export default function EntityView({ entity }: { entity: EntityType }) {
     </div>
   );
 }
+
