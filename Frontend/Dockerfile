@@ -1,65 +1,68 @@
-# Etapa de construcción
-FROM node:18-alpine AS builder
+# syntax=docker.io/docker/dockerfile:1
 
-# Establecer directorio de trabajo
+FROM node:18-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copiar archivos de dependencias
-COPY package*.json ./
+# Install dependencies based on the preferred package manager
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
-# Instalar dependencias
-RUN npm ci && npm cache clean --force
 
-# Copiar código fuente
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
 ARG NEXT_PUBLIC_API_URL
-# Establecer variables de entorno para el build
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-ENV NODE_ENV=production
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the build.
+# ENV NEXT_TELEMETRY_DISABLED=1
 
-# Construir la aplicación
-RUN npm run build
+RUN \
+  if [ -f yarn.lock ]; then yarn run build; \
+  elif [ -f package-lock.json ]; then npm run build; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
-# Etapa intermedia - instalar solo dependencias de producción
-FROM node:18-alpine AS deps
-
+# Production image, copy all the files and run next
+FROM base AS runner
 WORKDIR /app
 
-# Copiar archivos de dependencias
-COPY package*.json ./
+ENV NODE_ENV=production
+# Uncomment the following line in case you want to disable telemetry during runtime.
+# ENV NEXT_TELEMETRY_DISABLED=1
 
-# Instalar solo dependencias de producción
-RUN npm ci --only=production && npm cache clean --force
-
-# Etapa de producción
-FROM node:18-alpine AS runner
-
-# Instalar curl para health checks
-RUN apk add --no-cache curl
-
-# Crear usuario no root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Establecer directorio de trabajo
-WORKDIR /app
+COPY --from=builder /app/public ./public
 
-# Establecer variable de entorno de producción
-ENV NODE_ENV=production
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copiar dependencias de producción desde deps
-COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
-
-# Copiar archivos construidos desde builder
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder --chown=nextjs:nodejs /app/package*.json ./
-
-# Cambiar al usuario no root
 USER nextjs
 
-# Exponer puerto
 EXPOSE 3000
 
-# Comando para ejecutar la aplicación
-CMD ["npm", "start"]
+ENV PORT=3000
+
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
+ENV HOSTNAME="0.0.0.0"
+CMD ["node", "server.js"]

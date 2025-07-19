@@ -64,11 +64,3 @@ README.md
 .next/
 .vercel
 .turbo
-
-# Archivos de configuración de desarrollo
-jest.config.ts
-jest.setup.ts
-tailwind.config.ts
-next.config.ts
-postcss.config.mjs
-eslint.config.mjs
