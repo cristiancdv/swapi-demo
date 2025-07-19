@@ -14,7 +14,7 @@ type EntityType = 'characters' | 'movies' | 'ships' | 'planets';
 
 export default function EntityView({ entity }: { entity: EntityType }) {
   const [page, setPage] = useState(1);
-    const { data, error, isLoading, mutate }:SWRResponse<{results: {id:string,title:string,description:string,image:string}[],count:number}> = useEntityAllData(entity,page);
+    const { data, error, isLoading, mutate,isValidating }:SWRResponse<{results: {id:string,title:string,description:string,image:string}[],count:number}> = useEntityAllData(entity,page);
     const { viewMode, toggleViewMode, isHydrated } = useViewMode();
 
  
@@ -25,9 +25,9 @@ export default function EntityView({ entity }: { entity: EntityType }) {
         {isHydrated && <SwitchButton viewMode={viewMode} toggleViewMode={toggleViewMode} />}
       </div>
 
-      {isLoading && <LoadingSpinner />}
+      {(isLoading || isValidating) && <LoadingSpinner />}
       {error && <ErrorMessage message="Error al cargar datos" onRetry={mutate} />}
-      {!isLoading && !error && data && (
+      {!isLoading && !isValidating && !error && data && (
         <>
           <div className="flex-1">
             {viewMode === 'card' ? (
