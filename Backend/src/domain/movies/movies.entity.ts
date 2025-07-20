@@ -20,7 +20,6 @@ export class MoviesEntityDetails {
 
   get description(): string {
     return `
-    - Título: ${this.movie.title}
     - Episodio: ${this.movie.episode_id}
     - Director: ${this.movie.director}
     - Productor: ${this.movie.producer}`;

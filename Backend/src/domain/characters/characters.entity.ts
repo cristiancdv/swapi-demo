@@ -21,9 +21,6 @@ export class CharactersEntityDetails {
     return `
     - Altura: ${this.character.height} 
     - Peso: ${this.character.mass} 
-    - Color de pelo: ${this.character.hair_color} 
-    - Color de piel: ${this.character.skin_color} 
-    - Color de ojos: ${this.character.eye_color} 
     - Año de nacimiento: ${this.character.birth_year} 
     - Género: ${this.character.gender}`;
   }

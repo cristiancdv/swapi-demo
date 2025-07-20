@@ -25,6 +25,8 @@ export class GetPlanetUseCase {
       gravity: planet.gravity,
       terrain: planet.terrain,
       surface_water: planet.surface_water,
+      population: planet.population,
+      climate: planet.climate,
       residents: planet.residents,
       films: planet.films,
       created: planet.created,

@@ -21,15 +21,11 @@ export class PlanetsEntityDetails {
 
   get description(): string {
     return `
-    - Nombre: ${this.planet.name} 
     - Periodo de rotación: ${this.planet.rotation_period} 
-    - Periodo orbital: ${this.planet.orbital_period} 
     - Diámetro: ${this.planet.diameter} 
     - Clima: ${this.planet.climate} 
-    - Gravedad: ${this.planet.gravity} 
     - Terreno: ${this.planet.terrain} 
-    - Agua superficial: ${this.planet.surface_water} 
-    - Población: ${this.planet.population}`;
+    `;
   }
 
   get residents(): string[] {

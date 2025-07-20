@@ -19,10 +19,10 @@ export class GetMovieUseCase {
     return {
       id: movie.id,
       title: movie.title,
+      episode_id: movie.episode_id,
+      opening_crawl: movie.opening_crawl,
       director: movie.director,
       producer: movie.producer,
-      release_date: movie.release_date,
-      species: movie.species,
       characters: movie.characters,
       planets: movie.planets,
       starships: movie.starships,

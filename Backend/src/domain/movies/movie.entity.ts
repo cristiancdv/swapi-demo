@@ -13,6 +13,12 @@ export class MovieEntityDetails {
   get title(): string {
     return this.movie.title;
   }
+  get episode_id(): number {
+    return this.movie.episode_id;
+  }
+  get opening_crawl(): string {
+    return this.movie.opening_crawl;
+  }
   get director(): string {
     return this.movie.director;
   }
