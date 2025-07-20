@@ -1,6 +1,8 @@
 ﻿# SWAPI Full Stack Application
- URL-Front:[SwapiFront](https://swapi-nextjs-rouge.vercel.app/)
- URL-Backend:[SwapiBack](https://swapi-nestj-production.up.railway.app/)
+
+URL-Front:[SwapiFront](https://swapi-nextjs-rouge.vercel.app/)
+ 
+URL-Backend:[SwapiBack](https://swapi-nestj-production.up.railway.app/docs)
 
 Una aplicación fullstack que consume la API de Star Wars (SWAPI) proporcionando una interfaz moderna y escalable para explorar el universo de Star Wars.
 
