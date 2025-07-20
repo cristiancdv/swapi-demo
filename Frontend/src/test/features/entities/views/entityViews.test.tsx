@@ -197,7 +197,11 @@ describe("EntityView", () => {
     mockUseDisclosure.mockReturnValue({
       isOpen: false,
       onOpen: mockOnOpen,
+      onClose: jest.fn(),
       onOpenChange: mockOnOpenChange,
+      isControlled: false,
+      getButtonProps: jest.fn(),
+      getDisclosureProps: jest.fn(),
     });
   });
 
@@ -294,7 +298,11 @@ describe("EntityView", () => {
       mockUseDisclosure.mockReturnValue({
         isOpen: true,
         onOpen: mockOnOpen,
+        onClose: jest.fn(),
         onOpenChange: mockOnOpenChange,
+        isControlled: false,
+        getButtonProps: jest.fn(),
+        getDisclosureProps: jest.fn(),
       });
 
       render(<EntityView entity="characters" />);
@@ -308,7 +316,11 @@ describe("EntityView", () => {
       mockUseDisclosure.mockReturnValue({
         isOpen: true,
         onOpen: mockOnOpen,
+        onClose: jest.fn(),
         onOpenChange: mockOnOpenChange,
+        isControlled: false,
+        getButtonProps: jest.fn(),
+        getDisclosureProps: jest.fn(),
       });
 
       render(<EntityView entity="movies" />);
